@@ -1,8 +1,8 @@
-import { PrismaClient,UserRole } from "@prisma/client"
+import { UserRole } from "@prisma/client"
 import * as bcrypt from "bcrypt"
+import prisma from "../../../shared/prisma";
 
 
-const prisma = new PrismaClient();
 
 const createAdmin = async (data: any) => {
     
