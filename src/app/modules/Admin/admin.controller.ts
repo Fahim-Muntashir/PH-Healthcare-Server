@@ -1,4 +1,4 @@
-import  { Request, Response } from 'express';
+import  { NextFunction, Request, Response } from 'express';
 import { AdminService } from './admin.service';
 import { adminFilterFields } from './admin.constant';
 import pick from '../../../shared/pick';
@@ -38,7 +38,7 @@ const getAllFromDB = async (req: Request, res: Response) => {
 
 
 
-const getByIdFromDB = async (req: Request, res: Response) => { 
+const getByIdFromDB = async (req: Request, res: Response,next:NextFunction) => { 
     const { id } =  req.params;
 try {
     const result = await AdminService.getByIdFromDB(id);
@@ -51,12 +51,8 @@ try {
         data:result,
     })
  
-}catch (error:any) {
-    res.status(500).json({
-        success: false,
-        message: error?.name || "Something went wrong",
-        error:error
-})
+}catch (err:any) {
+    next(err)
 }
 }
 
@@ -64,7 +60,7 @@ try {
 
 // Update Into db
 
-const updateIntoDB = async (req: Request, res: Response) => { 
+const updateIntoDB = async (req: Request, res: Response,next:NextFunction) => { 
     const { id } = req.params;
 try {
     const result = await AdminService.updateIntoDB(id,req.body);
@@ -74,16 +70,12 @@ try {
         message: " Admin Data Updated!",
         data: result,
     })
-}catch (error:any) {
-    res.status(500).json({
-        success: false,
-        message: error?.name || "Something went wrong",
-        error:error
-})
+} catch (err: any) {
+    next(err)
 }
 }
 
-const deleteFromDB = async (req: Request, res: Response) => { 
+const deleteFromDB = async (req: Request, res: Response,next:NextFunction) => { 
     const { id } = req.params;
 try {
     const result = await AdminService.deleteFromDB(id);
@@ -94,15 +86,12 @@ try {
         data: result,
     })
 
-}catch (error:any) {
-    res.status(500).json({
-        success: false,
-        message: error?.name || "Something went wrong",
-        error:error
-})
+} catch (err: any) {
+    next(err)
+
 }
 }
-const softDeleteFromDB = async (req: Request, res: Response) => { 
+const softDeleteFromDB = async (req: Request, res: Response,next:NextFunction) => { 
     const { id } = req.params;
 try {
     const result = await AdminService.softDeleteFromDB(id);
@@ -116,12 +105,8 @@ try {
   
 
 
-}catch (error:any) {
-    res.status(500).json({
-        success: false,
-        message: error?.name || "Something went wrong",
-        error:error
-})
+}catch (err:any) {
+    next(err)
 }
 }
 
