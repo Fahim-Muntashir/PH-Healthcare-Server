@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Admin, Prisma } from "@prisma/client";
 import { adminSearchAbleFields } from "./admin.constant";
 import { paginationHelper } from "../../../helpers/paginationHelpers";
 import prisma from "../../../shared/prisma";
@@ -56,6 +56,59 @@ const getAllFromDB = async (params: any, options: any) => {
     }
 };
 
+
+// Get Using Id
+
+
+const getByIdFromDB = async (id:string) => { 
+    const result = await prisma.admin.findUnique({
+        where: {
+        id:id
+        }
+    })
+    return(result)
+}
+
+
+
+const updateIntoDB = async (id: string,data:Partial<Admin>) => {
+  
+   await prisma.admin.findUniqueOrThrow({
+        where: {
+            id
+        }
+   })
+    
+    const result = await prisma.admin.update({
+        where: {
+            id
+        },data
+    })
+
+    return(result)
+}
+
+// Delete Data
+const deleteFromDB = async (id: string) => {
+    console.log("Delete From DB");
+    const result = await prisma.$transaction(async (transactionClient) => {
+        const adminDeletedData = await transactionClient.admin.delete({
+            where: { id }
+        });
+        const userDeletedData = await transactionClient.user.delete({
+            where: { email: adminDeletedData.email }
+        });
+        return adminDeletedData;
+    });
+    return result;
+}
+
+
+
+
 export const AdminService = {
-    getAllFromDB
+    getAllFromDB,
+    getByIdFromDB,
+    updateIntoDB,
+    deleteFromDB
 };
