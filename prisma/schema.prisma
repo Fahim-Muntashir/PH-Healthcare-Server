@@ -28,14 +28,14 @@ model User {
 }
 
 model Admin {
-  id            String  @id @default(uuid())
+  id            String   @id @default(uuid())
   name          String
-  email         String  @unique
+  email         String   @unique
   profilePhtoto String?
   contactNumber String
-  isDeleted     Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isDeleted     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   user User @relation(fields: [email], references: [email])
 
@@ -52,4 +52,5 @@ enum UserRole {
 enum UserStatus {
   ACTIVE
   BLOCK
+  DELETE
 }
