@@ -131,7 +131,7 @@ const softDeleteFromDB = async (id: string):Promise<Admin | null> => {
         await transactionClient.user.update({
             where: { email: adminDeletedData.email },
             data: {
-                status: UserStatus.DELETED
+                status: UserStatus.DELETE
             }
         });
         return adminDeletedData;

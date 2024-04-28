@@ -1,7 +1,8 @@
-import express, { Application, NextFunction, Request, Response } from 'express';
+import express, { Application, NextFunction, Request, Response, response } from 'express';
 import cors from 'cors';
 import router from './app/routes';
 import globalErrorHandler from './app/middleware/gloabalErrorHandelr';
+import httpStatus from 'http-status';
 
 const app: Application = express();
 
@@ -16,6 +17,17 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 app.use('/api/v1', router);
+
+app.use((req: Request, res: Response, next: NextFunction)=> {
+  res.status(httpStatus.NOT_FOUND).json({
+    success: false,
+    message: 'Api Not Found',
+    error: {
+      path: req.originalUrl,
+      message:"Your Url Not Found"
+    }
+  })
+})
 
 app.use(globalErrorHandler);
 
