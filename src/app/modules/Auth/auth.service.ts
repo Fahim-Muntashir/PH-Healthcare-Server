@@ -52,7 +52,7 @@ const refreshToken = async (token: string) => {
   
   
     try {
-        decodedData = jwtHelpers.verifyToken(token, 'sdfadfawedf');
+        decodedData = jwtHelpers.verifyToken(token, config.jwt.refresh_token_secret as Secret);
         console.log(decodedData);
     } catch (err) {
         throw new Error("You Are Now Authorized!!")
