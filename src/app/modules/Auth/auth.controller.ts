@@ -25,6 +25,8 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     }
     )
 })
+
+
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
    
     const { refreshToken } = req.cookies;
@@ -34,7 +36,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success:true,
-        message: "Logged In Successfully",
+        message: "Woow token Genarate Successfully",
         data:result,
 
         // data: {
@@ -45,6 +47,38 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
     )
 })
 
+
+const changePassword = catchAsync(async (req: Request & { user?: any }, res: Response) => {
+   
+    const user = req.user;
+
+    const result = await AuthService.changePassword(user,req.body);
+   
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success:true,
+        message: "Password Changed Successfully",
+        data:result,
+    }
+    )
+})
+
+
+const forgotpassword =  catchAsync(async (req: Request, res: Response) => {
+   
+    const result = await AuthService.forgotPassword(req.body);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success:true,
+        message: "Forgot Password Successfully",
+        data:result,
+    }
+    )
+
+})
+
+
 export const AuthController = {
-    loginUser,refreshToken
+    loginUser,refreshToken,changePassword,forgotpassword
 }
