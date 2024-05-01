@@ -5,6 +5,7 @@ import pick from "../../../shared/pick";
 import { userFilterableFields, userSearcAbleFields } from "./user.constant";
 import sendResponse from "../../../shared/sendHelpers";
 import httpStatus from "http-status";
+import { IAuthUser } from "../../interfaces/common";
 
 const createAdmin = catchAsync(async (req: Request, res: Response) => {
 console.log(req.body);
@@ -74,9 +75,9 @@ const changeProfileStatus = catchAsync(async (req:Request, res:Response) => {
             })
         
 })
+
+
 const getMyProfile = catchAsync(async (req:Request, res:Response) => {
-
-
 
 const user= req.user;
 
@@ -92,11 +93,25 @@ const result = await userServices.getMyProfile(user)
         
 })
 
+
+const updateMyProfile = catchAsync(async (req: Request &{user?:IAuthUser}, res: Response) => {
+
+        const user = req.user;
+    
+        const result = await userServices.updateMyProfile(user as IAuthUser,req);
+    
+        sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: "My profile updated!",
+            data: result
+        })
+    });
+    
 export const userController = {
   createAdmin,
         createDoctor, createPatient,
         getAllFromDB,
         changeProfileStatus,
-        getMyProfile
-  
-}
+        getMyProfile,
+        updateMyProfile}
