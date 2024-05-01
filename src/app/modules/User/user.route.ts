@@ -5,9 +5,12 @@ import auth from '../../middleware/auth';
 import { fileUploader } from '../../../helpers/filUploader';
 import { UserRole } from '@prisma/client';
 import { userValidation } from './user.validation';
+import validateRequest from '../../middleware/validateRequest';
 
 const router = express.Router();
 
+
+router.get('/me',auth(UserRole.SUPER_ADMIN,UserRole.ADMIN,UserRole.DOCTOR,UserRole.PATIENT),userController.getMyProfile)
 
 
 router.get('/',auth(UserRole.SUPER_ADMIN,UserRole.ADMIN),userController.getAllFromDB)
@@ -42,7 +45,9 @@ router.post(
 );
 
 
-router.patch('/:id/status',auth(UserRole.SUPER_ADMIN,UserRole.ADMIN),userController.changeProfileStatus)
+router.patch('/:id/status',auth(UserRole.SUPER_ADMIN,UserRole.ADMIN),validateRequest(userValidation.updateStatus),userController.changeProfileStatus)
+
+
 
 
 export const UserRoutes= router;
