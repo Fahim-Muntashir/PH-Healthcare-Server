@@ -1,29 +1,39 @@
-import express, { NextFunction, Response } from 'express';
+import express from 'express';
+import validateRequest from '../../middlewares/validateRequest';
 import { AdminController } from './admin.controller';
+import auth from '../../middlewares/auth';
+import { ENUM_USER_ROLE } from '../../../enums/user';
 
 const router = express.Router();
-import validateRequest from '../../middleware/validateRequest';
-import { adminValidationSchemas } from './admin.validations';
-import auth from '../../middleware/auth';
-import { UserRole } from '@prisma/client';
 
+router.get(
+    '/',
+    auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+    AdminController.getAllFromDB
+);
 
+router.get(
+    '/:id',
+    auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+    AdminController.getByIdFromDB
+);
 
+router.patch(
+    '/:id',
+    auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+    AdminController.updateIntoDB
+);
 
+router.delete(
+    '/:id',
+    auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+    AdminController.deleteFromDB
+);
 
+router.delete(
+    '/soft/:id',
+    auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+    AdminController.softDelete
+);
 
-router.get('/', auth(UserRole.SUPER_ADMIN, UserRole.ADMIN), AdminController.getAllFromDB)
-
-
-router.get('/:id',auth(UserRole.SUPER_ADMIN, UserRole.ADMIN), AdminController.getByIdFromDB)
-
-
-router.patch('/:id',auth(UserRole.SUPER_ADMIN, UserRole.ADMIN), validateRequest(adminValidationSchemas.update), AdminController.updateIntoDB)
-
-
-router.delete('/:id',auth(UserRole.SUPER_ADMIN, UserRole.ADMIN), AdminController.deleteFromDB)
-
-
-router.delete('/soft/:id',auth(UserRole.SUPER_ADMIN, UserRole.ADMIN), AdminController.softDeleteFromDB)
-
-export const adminRoutes = router;
+export const AdminRoutes = router;

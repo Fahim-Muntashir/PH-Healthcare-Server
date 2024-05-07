@@ -1,17 +1,43 @@
 import express from 'express';
+import validateRequest from '../../middlewares/validateRequest';
 import { AuthController } from './auth.controller';
-import { UserRole } from '@prisma/client';
-import auth from '../../middleware/auth';
+import { AuthValidation } from './auth.validation';
+import auth from '../../middlewares/auth';
+import { ENUM_USER_ROLE } from '../../../enums/user';
 
 const router = express.Router();
 
-router.post('/login',AuthController.loginUser);
+router.post(
+    '/login',
+    validateRequest(AuthValidation.loginZodSchema),
+    AuthController.loginUser
+);
 
-router.post('/refresh-token',AuthController.refreshToken);
-router.post('/change-password',auth(UserRole.SUPER_ADMIN,UserRole.ADMIN,UserRole.DOCTOR,UserRole.PATIENT),AuthController.changePassword);
+router.post(
+    '/refresh-token',
+    validateRequest(AuthValidation.refreshTokenZodSchema),
+    AuthController.refreshToken
+);
 
-router.post('/forgot-password',AuthController.forgotpassword);
+router.post(
+    '/change-password',
+    validateRequest(AuthValidation.changePasswordZodSchema),
+    auth(
+        ENUM_USER_ROLE.SUPER_ADMIN,
+        ENUM_USER_ROLE.ADMIN,
+        ENUM_USER_ROLE.DOCTOR,
+        ENUM_USER_ROLE.PATIENT
+    ),
+    AuthController.changePassword
+);
+router.post(
+    '/forgot-password',
+    AuthController.forgotPass
+);
 
-router.post('/reset-password',AuthController.resetPassword)
+router.post(
+    '/reset-password',
+    AuthController.resetPassword
+);
 
-export const authRoutes = router;
+export const AuthRoutes = router;
