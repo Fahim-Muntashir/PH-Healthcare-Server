@@ -1,0 +1,21 @@
+Wed Oct 02 2024 11:0:4 } [PH] error: 
+Invalid `prisma.appointment.findMany()` invocation:
+
+
+Can't reach database server at `localhost`:`5432`
+
+Please make sure your database server is running at `localhost`:`5432`.
+Wed Oct 02 2024 11:1:4 } [PH] error: 
+Invalid `prisma.appointment.findMany()` invocation:
+
+
+Can't reach database server at `localhost`:`5432`
+
+Please make sure your database server is running at `localhost`:`5432`.
+Wed Oct 02 2024 11:2:4 } [PH] error: 
+Invalid `prisma.appointment.findMany()` invocation:
+
+
+Can't reach database server at `localhost`:`5432`
+
+Please make sure your database server is running at `localhost`:`5432`.
