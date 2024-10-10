@@ -13,6 +13,9 @@ export async function sendEmail(
             user: config.email,
             pass: config.app_pass,
         },
+        tls: {
+            rejectUnauthorized:false,
+        }
     });
 
     await transporter.sendMail({

@@ -155,12 +155,19 @@ const forgotPass = async (email: string) => {
     const resetLink: string = config.reset_link + `?id=${isUserExist.id}&token=${passResetToken}`
 
     await sendEmail(email, `
-      <div>
-        <p>Dear ${isUserExist.role},</p>
-        <p>Your password reset link: <a href=${resetLink}><button>RESET PASSWORD<button/></a></p>
-        <p>Thank you</p>
-      </div>
-  `);
+        <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+          <p style="font-size: 18px; font-weight: bold;">Dear ${isUserExist.role},</p>
+          <p style="font-size: 16px;">You have requested to reset your password. Please click the button below to proceed:</p>
+          <a href="${resetLink}" style="text-decoration: none;">
+            <button style="background-color: #007BFF; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer;">
+              RESET PASSWORD
+            </button>
+          </a>
+          <p style="font-size: 16px;">Thank you,</p>
+          <p style="font-size: 16px;">The Team</p>
+        </div>
+      `);
+      
 }
 
 const resetPassword = async (payload: { id: string, newPassword: string }, token: string) => {
